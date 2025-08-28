@@ -80,7 +80,7 @@ let color = {
 
         alpha: 1,
 
-        colorAmount: Math.floor(Math.random() * (max - min) + min);
+        colorAmount: Math.floor(Math.random() * (3 - 10) + 3);
     };
 
 
