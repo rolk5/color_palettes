@@ -17,62 +17,82 @@
 }
 
 body {
-    padding: 5vh 2vw 0 2vw;
+
     background-color: var(--bg-color);
 }
 
-.page {
-    display: grid;
-    grid-template-columns:
-    min(170px, 20vw) 1fr;
-    grid-template-areas:
-    'leftS rigthS'
-}
+
+/*.page {
+
+}*/
 
 
 /*Панель слева--------------------------------------------------*/
+
+
+.leftSide {
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    height: 7vh;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid AliceBlue;
+}
+
+@media (max-width: 800px) {
+    .leftSide {
+        justify-content: center;
+    }
+    
+}
 
 /**Лого**/
 
 .logo {
     font-size: 2rem;
     font-weight: 800;
-    padding-bottom: 1rem;
+    padding-left: 1vw;
 }
 
 .logo span {
-    color: rgb(210, 2, 2);
+    color: deeppink;
 }
 
 
-/**Навигация**/
-.leftSide {
-    border-right: solid 1px rgba(175, 175, 175, 0.2);
-}
 
-li a {
-    text-decoration: none;
-    color: var(--menu-color);
-}
-
-li {
-    list-style-type: none;
-    margin-bottom: 0.1rem;
-   /* margin-left: 5px;*/
-}
 
 
 /*Основной контент--------------------------------------------------*/
 
 /**Структура страницы**/
 main {
-    max-width: min(80vw, 700px);
-    margin: 0 auto;
+    margin: 0;
+
+}
+
+.cover {
+    display: flex;
+    height: 50vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.cover h1 {
+    background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cover h1 span {
+    -webkit-text-fill-color: deeppink;
 }
 
 .content {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 img {
@@ -115,19 +135,37 @@ p span {
     font-size: small;
 }
 
-/**Карта**/
-.map {
-    width: min(80vw, 1200px);
-    aspect-ratio: 2 / 1;
-    margin-bottom: 1rem;
-    outline: dashed 1px;
-    align-self: center;
+
+
+
+footer {
     display: flex;
     align-items: center;
+
     justify-content: center;
-    font-size: clamp(5rem, 20vw, 10rem);
-    font-weight: 700;
-    background-color: hsl(220, 82%, 98%);
+    gap: 10px;
+    border-top: solid 1px;
+    border-color: var(--selection-text);
+    background-color: var(--bg-color);
+    height: 4rem;
+}
+
+
+footer p {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+}
+
+footer .logo {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }
 
 
@@ -179,3 +217,56 @@ p span {
 
 
 
+.colorArrayContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 10px 35px;
+    margin: 0 3vw;
+}
+
+
+[class*='colorItemContainer'] {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+[class*='colorPalleteContainer'] {
+    outline: solid 1px;
+    outline-color: Silver;
+    border-radius: 10px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    overflow: hidden
+}
+
+
+
+[class*='range'] {
+    width: 90%;
+}
+
+[class*='range1'] {
+    accent-color: Pink; 
+}
+
+[class*='range2'] {
+    accent-color: LightGreen; 
+}
+
+[class*='range3'] {
+    accent-color: LightSkyBlue; 
+}
+
+
+[class*='colorItemPalleteContainer'] {
+    outline: 1px solid;
+    width: 100px;
+    height: 100%;
+}
