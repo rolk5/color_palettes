@@ -80,16 +80,18 @@ let color = {
 
         alpha: 1,
 
-        colorAmount: Math.floor(Math.random() * (3 - 10) + 3);
+        colorAmount: function randomNumber (min = 3, max = 10) {                     //RandomNumber
+                        return Math.floor(Math.random() * (max - min) + min);
+                        }
     };
 
 
 
 
-
-function randonNumber (min = 3, max = 10) {                     //RandomNumber
+/*
+function randomNumber (min = 3, max = 10) {                     //RandomNumber
     return Math.floor(Math.random() * (max - min) + min);
-};
+};*/
 
 function colorCurve (x, waveLength, xOffsetWave, yStretchWave, n) {      //Определяет график кривой цвета
     let value = Math.round( (Math.sin( x / n * 10 * waveLength + xOffsetWave ) * yStretchWave + yStretchWave ) * 255 / 2);
@@ -104,7 +106,7 @@ let amountNum = 60;             //Количество паллеток
 let colorItemContainer;         //Контейнер каждой отдельной паллетки   
 let colorHeader;                //Заголовок
 let colorPalleteContainer;      //Цвета
-let colorItemPalleteContainerж  //Каждый цвет
+let colorItemPalleteContainer  //Каждый цвет
 let colorComponentRed;          //Составляющий цвет красный
 let colorComponentGreen;        //Составляющий цвет зеленый
 let colorComponentBlue;         //Составляющий цвет синий
@@ -116,7 +118,7 @@ for (i = 0; i <= amountNum; i++) {      //Генерация набора пал
     colorsArray.push(color);
 };
 
-
+console.log(colorsArray);
 
 
 let inputColorRange;                //Переменная ползунка
@@ -140,25 +142,67 @@ colorsArray.forEach((value, index, array) => {
         colorItemContainer.appendChild(colorPalleteContainer);                  //Передаем в HTML
 
 
-        let r1 = value.properties.red.waveLength;
-        let r2 = value.properties.red.xOffsetWave;
+        let r1;
+        let r2;
 
-        let g1 = value.properties.green.waveLength;
-        let g2 = value.properties.green.xOffsetWave;
+        let g1;
+        let g2;
 
-        let b1 = value.properties.blue.waveLength;
-        let b2 = value.properties.blue.xOffsetWave;
+        let b1;
+        let b2;
 
+        let red;
+        let green;
+        let blue;
 
+        let colorAttributeHTML;
+        let colorAttributeHTML_invert;
+
+        let valueColorAmountFixed = value.colorAmount(3, 20);
         
-        for (let i = 1; i <= value.colorAmount; i++) {                          //Генерация цветов
+        for (let i = 1; i <= valueColorAmountFixed; i++) {                          //Генерация цветов
+
+        r1 = value.properties.red.waveLength;
+        r2 = value.properties.red.xOffsetWave;
+
+        g1 = value.properties.green.waveLength;
+        g2 = value.properties.green.xOffsetWave;
+
+        b1 = value.properties.blue.waveLength;
+        b2 = value.properties.blue.xOffsetWave;
+
+        red = colorCurve(i, r1, r2, 1, valueColorAmountFixed);
+        green = colorCurve(i, g1, g2, 1, valueColorAmountFixed);
+        blue = colorCurve(i, b1, b2, 1, valueColorAmountFixed);
+
+        if ((red + blue + green)/3 <= 255 / 2) {
+            colorAttributeHTML_invert = 'white' //white
+            } else {
+            colorAttributeHTML_invert = 'black' 
+            };
+
+
+
             colorItemPalleteContainer = document.createElement('div');          //Контейнер с цветом
             colorItemPalleteContainer.className = `colorItemPalleteContainer`;      //Класс
             colorPalleteContainer.appendChild(colorItemPalleteContainer);           //Передаем в HTML
-                
-                colorBlockStyle = `rgba(${colorCurve(i, r1, r2, 1, value.colorAmount)}, ${colorCurve(i, g1, g2, 1, value.colorAmount)}, ${colorCurve(i, b1, b2, 1, value.colorAmount)}, 1)`;
+                colorBlockStyle = `rgba(${red}, ${green}, ${blue}, 1)`;
                 colorItemPalleteContainer.style.backgroundColor = colorBlockStyle;
+
+                colorAttributeHTML = document.createElement('p');                           //Информация о цвете
+                    colorAttributeHTML.innerText = 
+                    `RGB
+                    R ${red}
+                    G ${green}
+                    B ${blue}
+                    A 1`;
+                    colorAttributeHTML.style.color = colorAttributeHTML_invert;
+                    colorItemPalleteContainer.appendChild(colorAttributeHTML);
+
         };
+
+
+
 
 
 /*
@@ -215,19 +259,14 @@ function colorCurve (x, waveLength, xOffsetWave, yStretchWave) {      //Опре
 
 */
 
-    console.log(
-        `index ${index}
-        r: ${value.fn.red(index, Math.PI / 6, Math.PI / 2, 1)}
-        g: ${value.fn.green(index, Math.PI / 6, Math.PI / 1.2, 1)}
-        b: ${value.fn.blue(index, Math.PI / 10, 3 * Math.PI / 2, 1)}
-        `)
+
 });
 
 
-console.log(pseudo)
 
 
-console.log(colorsArray)
+
+
 
 
 
