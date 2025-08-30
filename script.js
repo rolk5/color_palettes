@@ -96,7 +96,14 @@ function randomNumberPI_Divader (min = 3, max = 10) {                     //Rand
 };
 
 function colorCurve (x, waveAmount_k, shiftX, amplitY, n, shiftY) {      //Определяет график кривой цвета
-    let value = Math.round( ( (amplitY * Math.sin( waveAmount_k / 10 * Math.PI * ((x / n * 10) - shiftX) ) ) + shiftY)* 255 / 2);
+    let value = Math.round( ( (amplitY * Math.sin( waveAmount_k / 10 * Math.PI * ((x / n * 10) - shiftX) ) ) + shiftY)* 255);
+    if (value <= 0) {
+      value = 0
+    } else if (value >= 255) {
+      value = 255
+    } else {
+      value
+    }
     return value
 };
 /*(x - 1) для того чтобы счетчик начинался с 0 и столбцов было столько же сколько и в объекте "n4"  учитывается в строчке где "Цвета генерируются по свойству объекта"*/
@@ -118,29 +125,29 @@ let colorBlockStyle;            //Текстовая динамическая з
 
 colorsArray = [
   {
-    "name": "Оранжевый голубой",
+    "name": "Синий пурпурный оранжевый",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": 1 / 6 * Math.PI,
-        "shiftX": 0.5 * Math.PI,
-        "amplitY": 1
+        "shiftY": 0.8,
+        "waveAmount_k": 1.1,
+        "shiftX": 4.3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": 1 / 6 * Math.PI,
-        "shiftX": 5 / 6 * Math.PI,
-        "amplitY": 1
+        "shiftY": 0.3,
+        "waveAmount_k": 0.6,
+        "shiftX": 6.3,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": 0.1 * Math.PI,
-        "shiftX": 3 / 2 * Math.PI,
-        "amplitY": 1
+        "shiftY": 0.8,
+        "waveAmount_k": 0.5,
+        "shiftX": 21,
+        "amplitY": 0.4
       }
     },
     "alpha": 1,
-    "colorBlockAmount": 10
+    "colorBlockAmount": 5
   },
 
 
@@ -157,47 +164,97 @@ colorsArray = [
         "amplitY": 0
       },
       "green": {
-        "shiftY": 1,
+        "shiftY": 0.5,
         "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
+      },
+      "blue": {
+        "shiftY": 0.5,
+        "waveAmount_k": 0.7,
+        "shiftX": 2.7,
+        "amplitY": 0.5
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 9
+  },
+
+
+
+
+
+
+  {
+    "name": "Синий белый красный",
+    "properties": {
+      "red": {
+        "shiftY": 1,
+        "waveAmount_k": 0.9,
         "shiftX": 5,
         "amplitY": 1
       },
+      "green": {
+        "shiftY": 0.6,
+        "waveAmount_k": 2,
+        "shiftX": 2.5,
+        "amplitY": 0.4
+      },
       "blue": {
         "shiftY": 1,
-        "waveAmount_k": 0.7,
-        "shiftX": 2.9,
+        "waveAmount_k": 0.9,
+        "shiftX": 16,
         "amplitY": 1
       }
     },
     "alpha": 1,
     "colorBlockAmount": 10
   },
-
-
-
-
-
-
   {
-    "name": "Оранжевый голубой2",
+    "name": "Голубой пурпурный",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI,
-        "shiftX": Math.PI,
-        "amplitY": 1
+        "shiftY": 0.6,
+        "waveAmount_k": 1,
+        "shiftX": 5.6,
+        "amplitY": 0.4
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI,
-        "shiftX": Math.PI,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 15,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI,
-        "shiftX": Math.PI * 0.2,
-        "amplitY": 1
+        "shiftY": 0.6,
+        "waveAmount_k": 1.2,
+        "shiftX": 12.3,
+        "amplitY": 0.4
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 10
+  },
+  {
+    "name": "Оранжевый голубой",
+    "properties": {
+      "red": {
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
+      },
+      "green": {
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
+      },
+      "blue": {
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -207,22 +264,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI * Math.random(),
+        "shiftX": Math.PI * Math.random(),
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI * Math.random(),
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -232,22 +289,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -257,22 +314,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -282,22 +339,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -307,22 +364,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -332,22 +389,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -357,22 +414,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -382,22 +439,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -407,22 +464,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -432,22 +489,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -457,22 +514,22 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
@@ -482,1177 +539,27 @@ colorsArray = [
     "name": "Оранжевый голубой",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": Math.PI * 3,
+        "amplitY": 0.5
       },
       "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": Math.PI / 2,
+        "shiftX": 7,
+        "amplitY": 0.5
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
+        "shiftY": 0.5,
+        "waveAmount_k": 1,
+        "shiftX": 5,
+        "amplitY": 0.5
       }
     },
     "alpha": 1,
     "colorBlockAmount": 7
   },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 2,
-        "amplitY": 1
-      },
-      "green": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 6,
-        "shiftX": Math.PI / 1.2,
-        "amplitY": 1
-      },
-      "blue": {
-        "shiftY": 1,
-        "waveAmount_k": Math.PI / 10,
-        "shiftX": 3 * Math.PI / 2,
-        "amplitY": 1
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  }
 ];
 
 
