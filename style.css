@@ -22,9 +22,6 @@ body {
 }
 
 
-/*.page {
-
-}*/
 
 
 /*Панель слева--------------------------------------------------*/
@@ -41,12 +38,7 @@ body {
     border-bottom: 1px solid AliceBlue;
 }
 
-@media (max-width: 800px) {
-    .leftSide {
-        justify-content: center;
-    }
-    
-}
+
 
 /**Лого**/
 
@@ -67,10 +59,7 @@ body {
 /*Основной контент--------------------------------------------------*/
 
 /**Структура страницы**/
-main {
-    margin: 0;
 
-}
 
 .cover {
     display: flex;
@@ -79,10 +68,13 @@ main {
     justify-content: center;
 }
 
+
+
 .cover h1 {
     background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    
 }
 
 .cover h1 span {
@@ -129,13 +121,6 @@ p span {
     font-size: 0.9rem;
 }
 
-.imgNotaition {
-    color: rgb(152, 152, 152);
-    font-style: italic;
-    font-size: small;
-}
-
-
 
 
 footer {
@@ -169,65 +154,107 @@ a {
 }
 
 
-.colorpallete {
-    display: flex;
-    border-radius: 10px;
-    height: fit-content;
-    width: fit-content;
-    width: calc(70px * 11);
-    max-width: calc(70px * 11);
-    overflow: hidden;
-    outline: 1px solid;
-    outline-color: rgba(224, 224, 224, 0.675);
-}
-
-
-.blockColor {
-    display: flex;
-    width: 70px;
-    height: 150px;
-    justify-content: center;
-    align-items: center;
-    transition: ease-in-out 0.15s;
-    margin: 0;
-    padding: 0;
-}
-
-.blockColor:hover {
-    width: 140px;
-    transition: ease-in-out 0.15s;
-}
-
-.blockColor p {
-        font-size: 9px;
-        font-weight: 500;
-        margin: 0;
-        padding: 0;
-        visibility: hidden;
-}
-
-
-.blockColor:hover p {
-        font-size: 9px;
-        font-weight: 500;
-        margin: 0;
-        padding: 0;
-        visibility: visible;
-}
 
 
 
+
+/*----------Контейнер всех палитр----------*/
 .colorArrayContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 10px 35px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-gap: 30px 35px;
     margin: 0 3vw;
 }
 
+/*-----Контейнер палитры и заголовка-----*/
+.colorPalleteContainer {
 
-[class*='colorItemContainer'] {
+    min-height: 100px;
+    /*min-width: 100%;*/
+}
 
+/*-----Заголовок-----*/
+.colorPalleteContainer > p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.colorPalleteContainer > p:hover {
+    color:rgb(0, 106, 198);
+}
+
+
+
+/*-----Контейнер с блоками цветов-----*/
+.colorBlocksContainer{
+    display: flex;
+    min-height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+
+
+/*-----Блок с цветом-----*/
+.colorBlock {
+    min-width:0;
     width: 100%;
+    min-height: 100%;
+    height: 100px;
+
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: ease-in-out 0.1s;
+}
+
+.colorBlock:hover {
+    min-height: 100%;
+    min-width: 100px;
+    transition: ease-in-out 0.1s;
+}
+
+
+/*-----Подпись цвета-----*/
+.colorBlock p {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    transition: all ease-in-out 0.1s;
+}
+
+.colorBlock:hover p  {
+    transition: all ease-in-out 0.2s;
+    opacity: 1;
+}
+
+.colorBlock:active p {
+    font-size: 0.65rem;
+    font-weight: 500;
+    transition: all ease-in-out 0.05s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*----------Окно редактирования градиента----------*/
+.colorWindow_Edit {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,68 +264,110 @@ a {
 
 
 
-
-
-/*Все цвета*/
-[class*='colorPalleteContainer'] {
-    outline: solid 1px;
-    outline-color: AliceBlue;
-    border-radius: 10px;
-    width: 100%;
-    height: 120px;
-    display: flex;
-    overflow: hidden;
-}
-
-
-
-
-
-
-[class*='range'] {
+/*Контейнер с цветовыми блоками*/
+.colorBlocksContainer_Edit {
     width: 90%;
+    display: flex;
+    min-height: 450px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 0 5rem;
 }
 
-[class*='range1'] {
-    accent-color: Pink; 
-}
-
-[class*='range2'] {
-    accent-color: LightGreen; 
-}
-
-[class*='range3'] {
-    accent-color: LightSkyBlue; 
-}
-
-
-[class*='colorItemPalleteContainer'] {
-    width: 100px;
-    height: 100%;
-    min-width:1px;
-    transition: ease-in-out 0.1s;
-    font-size: 9px;
+.colorBlock_Edit {
+    width: 100%;
+    min-height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-[class*='colorItemPalleteContainer']:hover {
-    width: 120px;
-    height: 100%;
-    min-width: 120px;
-    transition: ease-in-out 0.1s;
-}
-
-[class*='colorItemPalleteContainer'] p {
-        font-size: 9px;
-        font-weight: 500;
-        margin: 0;
-        padding: 0;
-        visibility: hidden;
+    cursor: pointer;
+    /*transition: ease-in-out 0.5s;*/
 }
 
 
-[class*='colorItemPalleteContainer']:hover p {
-        visibility: visible;
+/*-----Подпись цвета-----*/
+.colorBlock_Edit p {
+    font-size: 0.7rem;
+    font-weight: 600;
+   opacity: 0;
+    transition: opacity ease-in-out 0.1s;
+}
+
+.colorBlock_Edit:hover p  {
+    transition: opacity ease-in-out 0.2s;
+    opacity: 1;
+}
+
+.colorBlock_Edit:active p {
+    font-size: 0.65rem;
+    font-weight: 500;
+    transition: all ease-in-out 0.05s;
+}
+
+
+
+
+
+
+
+
+[class*='inputRange'] {
+    min-width: 400px;
+}
+
+
+
+
+[class*='colorEditPanel_Container'] {
+    display: block;
+    /*position: fixed;*/
+    width: 90vw;
+    height: 50vh;
+    background-color: rgb(255, 255, 255);
+    top: calc(50vh - ((50vh / 2) + 100px));
+    left: calc(50vw - ((90vw / 2) + 100px));
+    border: 1px solid rgb(150, 150, 150);
+    border-radius: 10px;
+    padding: 100px;
+
+}
+
+
+.closePallete {
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    background-color: rgb(200, 0, 0);
+    border-radius: 8px;
+    border: solid 1px;
+    color: white;
+}
+
+.closePallete:hover {
+    min-width: 100px;
+    height: 50px;
+    background-color: rgb(100, 0, 0);
+    border-radius: 8px;
+    border:  solid 1px;
+}
+
+.closePallete:active {
+    scale: 0.95;
+}
+
+
+/*Контейнер с инструментами для редактирования цветов*/
+.editColorTools {
+    display: flex;
+    width: 100%;
+    justify-content: space-around
+}
+
+.colorSliderBlock {
+    border: 1px solid rgb(118, 118, 118);
+    width: 40%;
+    border-radius: 8px;
+
 }
