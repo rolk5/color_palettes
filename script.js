@@ -1,153 +1,516 @@
-/*const menuContainer = document.querySelector('.navBar');
-
-const ui = document.createElement('ui');
-menuContainer.appendChild(ui);
-
-let li;
-let aHref;
-
-for (let i = 0; i < 10; i++) {
-    li = document.createElement('li');
-    ui.appendChild(li);
-
-    aHref = document.createElement('a');
-    aHref.innerHTML = `Пункт ${i + 1}`
-    aHref.href = `page${i + 1}.html`
-    li.appendChild(aHref);
-}
-
-    //console.log(aHref)
-
-*/
+/**
+ * Генератор цветовых палитр на основе различных фукций (синуса...)
+ * Подход похож на https://dev.thi.ng/gradients/ и https://coolors.co/
+ * 
+ * Подход с функуиями кривой синуса:
+ *  Каждый канал R/G/B кривой синуса со следующими параметрами:
+ *  — anp     ->  амплитуда (размах колебаний)
+ *  — freq    ->  количество гребней, частота
+ *  — offsetX ->  смещение по X
+ *  — offsetY ->  смещение по Y
+ */
 
 
-//Находим div class="content"
-const content = document.querySelector('.content');
+//  ---------------Константы---------------
 
-let colorArrayContainer = document.createElement('div'); //Контенер всех паллеток
-colorArrayContainer.className = 'colorArrayContainer';
-
-content.appendChild(colorArrayContainer);
+//Находим div class="content" для вставки всего содержимого
+const ROOT_CONTAINER = document.querySelector('.content');
 
 
 
 
-//Array of color pallete with properties
-let colorsArray = [];
+//  ---------------Функции---------------
 
-//Color paleete object example
-let color = {
-    name: 'Оранжевый голубой',
-    properties:
-        {
-            red: {
-                x: 1,
-                waveAmount_k: Math.PI / 6,
-                shiftX: Math.PI / 2,
-                amplitY: 1
-            },
-            
-            green: {
-                x: 1,
-                waveAmount_k: Math.PI / 6,
-                shiftX: Math.PI / 1.2 ,
-                amplitY: 1
-            },
-            
-            blue: {
-                x: 1,
-                waveAmount_k: Math.PI / 10,
-                shiftX: 3 * Math.PI / 2,
-                amplitY: 1
-            },
+/**
+ * Генерация значения канала по синусоиде https://www.desmos.com/calculator/wq4s6zggec?lang=ru
+ * @param {number} i        - индекс цвета
+ * @param {number} amp      - амплитуда (размах колебаний)
+ * @param {number} freq     - количество гребней, частота
+ * @param {number} offsetX  - смещение по X
+ * @param {number} offsetY  - смещение по Y
+ * @param {number} n        - количество цветов в палитре
+ * @returns {number}        - значение канала 0...255
+ */
+
+function colorCurve ({
+    i = '',
+    amp = '',
+    freq = '',
+    offsetX = '',
+    offsetY = '',
+    n = ''
+  } = {}) {
+    //Определяет график кривой цвета
+    let value = Math.round( ( (amp * Math.sin( freq / 10 * Math.PI * ((i / n * 10) - offsetX) ) ) + offsetY) * 255);
+    return Math.min(255, Math.max(0, value))
+  };
+/*(x - 1) для того чтобы счетчик начинался с 0 и столбцов было столько же сколько и в объекте "n4"  учитывается в строчке где "Цвета генерируются по свойству объекта"*/
+
+/**
+ * Белый или черный цвет текста в зависимости от фона ячеки
+ * @param {number} r 
+ * @param {number} g 
+ * @param {number} b 
+ * @returns {string} 'white' если цвет меньше 225/2,'black' если больше
+ */
+function invertColorText (r, g, b) {
+  const avg = (r + g + b) / 3;
+  return avg <= 225/2 ? 'white' : 'black'
+};
+
+
+
+//Функция длдя создания DOM элементов
+function createHTML_Element ({
+    tag = '',
+    className = '',
+    textContent = '',
+    parent = '',
+    inputType = '',
+    value = '',
+    option = {}
+  } = {}) {
+    const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (textContent) el.innerText = textContent;
+
+      if (inputType) el.type = inputType;
+      //Стандартные значения для input range
+      el.step = 0.1;
+      el.min = -10;
+      el.max = 20;
+
+      el.value = value;
+
+      //dataset
+      if (option.dataset) {
+        for (let [key, value] of Object.entries(option.dataset)) {
+          el.dataset[key] = value;
+        }
+      };
+
+      //Стили
+      if (option.style) {
+        for (let [key, value] of Object.entries(option.style)) {
+          el.style[key] = value;
+        }
+      };      
+
+      if (parent) parent.appendChild(el);
+      return el;
+  };
+
+
+
+//Функция для генерации градиентов
+function colorPalletesGenerator (value, index, parent) {
+  
+    //Контейнер каждой отдельной паллетки Заголовок и цвета
+    const colorPalleteContainer = createHTML_Element({
+      tag: 'div',
+      className: 'colorPalleteContainer',
+      parent: parent,
+    });
+
+    //Контейнер с цветами
+    const colorBlocksContainer = createHTML_Element({
+      tag: 'div',
+      className: 'colorBlocksContainer',
+      parent: colorPalleteContainer,
+    });
+
+    //Генерация цветов и подписей к нему
+    for (let i = 0; i <= value.colorBlockAmount; i++) {
+
+
+        /*---------Цвета генерируются по свойству объекта----------*/
+        let red = colorCurve({
+          i: i,
+          amp: value.properties.red.amp,
+          freq: value.properties.red.freq,
+          offsetX: value.properties.red.offsetX,
+          offsetY: value.properties.red.offsetY,
+          n: value.colorBlockAmount
+        });
+
+        let green = colorCurve({
+          i: i,
+          amp: value.properties.green.amp,
+          freq: value.properties.green.freq,
+          offsetX: value.properties.green.offsetX,
+          offsetY: value.properties.green.offsetY,
+          n: value.colorBlockAmount
+        });
+
+        let blue =  colorCurve({
+          i: i,
+          amp: value.properties.blue.amp,
+          freq: value.properties.blue.freq,
+          offsetX: value.properties.blue.offsetX,
+          offsetY: value.properties.blue.offsetY,
+          n: value.colorBlockAmount
+        });
+
+
+    //Контейнер с цветом
+    const colorBlock_Edit = createHTML_Element({
+        tag: 'div',
+        className: 'colorBlock',
+        parent: colorBlocksContainer,
+        option: {
+          dataset: {
+            colorInfo: `${red}, ${green}, ${blue}`
+          },
+          style: {backgroundColor: `rgba(${red}, ${green}, ${blue}, 1)`}
         },
-/*
-        fn: {
+      });
 
-            red: function (x, waveAmount_k, shiftX, amplitY, n) {      //Определяет график кривой цвета
-                let value = Math.round( (Math.sin( x / n * 10 * waveAmount_k + shiftX ) * amplitY + amplitY ) * 255 / 2);
-                return value
-            },
-            green: function (x, waveAmount_k, shiftX, amplitY, n) {      //Определяет график кривой цвета
-                let value = Math.round( (Math.sin( x / n * 10 * waveAmount_k + shiftX ) * amplitY + amplitY ) * 255 / 2);
-                return value
-            },
-            blue: function (x, waveAmount_k, shiftX, amplitY, n) {      //Определяет график кривой цвета
-                let value = Math.round( (Math.sin( x / n * 10 * waveAmount_k + shiftX ) * amplitY + amplitY ) * 255 / 2);
-                return value
-            }
-        },*/
+        
+        //Подпись цвета
+        const colorAttributeHTML = document.createElement('p');
+        colorAttributeHTML.innerText = 
+        `RGB
+        R ${red}
+        G ${green}
+        B ${blue}
+        A 1`;
+        colorAttributeHTML.style.color = invertColorText(red, green, blue);
+        colorBlock_Edit.appendChild(colorAttributeHTML);
 
-        alpha: 1,
+        //Копирование в буфер обмена цвета при нажатии на текст
+        colorBlock_Edit.addEventListener('click', function (el) {
+        navigator.clipboard.writeText(el.currentTarget.dataset.colorInfo);
+         console.log(el.currentTarget.dataset.colorInfo)
+        })
 
-        colorBlockAmount: 7,
-
-        colorAmount: function randomNumber (min = 3, max = 10) {                     //RandomNumber
-                        return Math.floor(Math.random() * (max - min) + min);
-                        }
     };
 
 
+        //Заголовок для каждой паллетки
+       const colorBlocksHeader = document.createElement('p');
+        colorBlocksHeader.innerText = `${value.name}`;
+        colorPalleteContainer.appendChild(colorBlocksHeader);
+
+          //Открытие окна редактора паллетки по клику на название
+          colorBlocksHeader.addEventListener('click', function () {
+
+          
+              editPalletesWindow({
+              pallete: colorsArray[index],
+              parent: ROOT_CONTAINER,
+            });
+          });
 
 
-
-function randomNumberPI_Divader (min = 3, max = 10) {                     //RandomNumber
-    return Math.floor(Math.random() * (max - min) + min);
 };
 
-function colorCurve (x, waveAmount_k, shiftX, amplitY, n, shiftY) {      //Определяет график кривой цвета
-    let value = Math.round( ( (amplitY * Math.sin( waveAmount_k / 10 * Math.PI * ((x / n * 10) - shiftX) ) ) + shiftY)* 255);
-    if (value <= 0) {
-      value = 0
-    } else if (value >= 255) {
-      value = 255
-    } else {
-      value
-    }
-    return value
+/*------------------------------------------------------*/
+
+//Функция для редактирования градиентов
+function editPalletesWindow ({
+  pallete = '', //Ссылка градиент из массива
+  parent = '',  //Родитель
+} = {}) {
+
+  //Окно редактируемой паллетки Заголовок, цвета, ползунки
+  const colorEditWindow = createHTML_Element({
+    tag: 'div',
+    className: 'colorWindow_Edit',
+    parent: parent,
+  });
+
+    //Окно редактируемой паллетки Заголовок, цвета, ползунки
+  const closeBtn = createHTML_Element({
+    tag: 'div',
+    className: 'closePallete',
+    textContent: 'Закрыть',
+    parent: colorEditWindow,
+  });
+
+  closeBtn.addEventListener('click', function () {
+  ROOT_CONTAINER.lastChild.remove()
+  })
+  
+    //Заголовок для каждой паллетки
+    const colorBlocksHeader = createHTML_Element({
+       tag: 'h1',
+       parent: colorEditWindow,
+       textContent: `${pallete.name}`,
+     });
+
+    //Контейнер со всеми цветами
+    const colorBlocksContainer_Edit = createHTML_Element({
+      tag: 'div',
+      className: 'colorBlocksContainer_Edit',
+      parent: colorEditWindow,
+    });
+
+
+
+
+    //Контейнер с инструментами для редактирования цветов
+    const editColorTools = createHTML_Element({
+      tag: 'div',
+      className: 'editColorTools',
+      parent: colorEditWindow,
+    });
+
+  //  Цикл создет количество цветов {i1} для групп слайдеров
+  /**
+   * {i1}: 1 - red;
+   *   2 - green;
+   *   3 - blue;
+   * {i2}: 1 - amp;
+   *   2 - freq;
+   *   3 - offsetX;
+   *   4 - offsetY;
+   */
+
+  //  Массив каналов цвета //Обращаемся ко всем ключам в propertis [red, green, blue]
+  const colorPropChannel = Object.keys(pallete.properties);
+
+
+  //  Цикл создания слайдеров по каналам
+  for (let i1 = 0; i1 < 3; i1++) {
+
+    //Контейнер слайдеров по каналам
+    const sliderChannel_Container = createHTML_Element({
+      tag: 'div',
+      className: `sliderChannel_Container_${colorPropChannel[i1]}`,
+      parent: editColorTools
+    });
+
+
+    //Массив свойств для каждого канала ['offsetY', 'freq', 'offsetX', 'amp']   //Чтобы вывести маасив необходимо обращаться к индексу colorPropChannel Object.keys(pallete.properties[colorPropChannel[0]])
+    const propertyColorName = Object.keys(pallete.properties[colorPropChannel[i1]]);
+    const propertyColorValue = Object.values(pallete.properties[colorPropChannel[i1]]);
+
+ 
+    
+
+    //Цикл создет 4 слайдера {i2} для парметра каждого канала {i1}
+    for (let i2 = 0; i2 < propertyColorName.length; i2++) {
+
+      //Создание каждого отдельного слайдера
+      const inputColorRange = createHTML_Element({
+        tag: 'input',
+        className: 'inputRange',
+        inputType: 'range',
+        parent: sliderChannel_Container,
+        value: propertyColorValue[i2],
+        option: {dataset:
+            {color: colorPropChannel[i1],
+              prop: propertyColorName[i2]
+            }
+          },
+      });
+      
+      //Отображение значения слайдера 
+      const inputColorRangeValue = createHTML_Element({
+        tag: 'p',
+        className: `inputRangeText_${colorPropChannel[i1]}_${propertyColorName[i2]}`,
+        textContent: `${propertyColorName[i2]} ${propertyColorValue[i2]}`,
+        parent: sliderChannel_Container,
+      });
+
+
+      //Изменение значения слайдера при прокрутке слайдера
+      inputColorRange.addEventListener('input', function(el) {
+        inputColorRangeValue.textContent = `${propertyColorName[i2]} ${el.target.value}`;
+      });
+        
+    };
+
+  };
+
+  
+
+
+  //Генерация цветов и подписей к нему
+  for (let i = 0; i <= pallete.colorBlockAmount; i++) {
+
+    /*---------Цвета генерируются по свойству объекта---------*/
+    let red = colorCurve({
+      i: i,
+      amp: pallete.properties.red.amp,
+      freq: pallete.properties.red.freq,
+      offsetX: pallete.properties.red.offsetX,
+      offsetY: pallete.properties.red.offsetY,
+      n: pallete.colorBlockAmount
+    });
+      
+    let green = colorCurve({
+      i: i,
+      amp: pallete.properties.green.amp,
+      freq: pallete.properties.green.freq,
+      offsetX: pallete.properties.green.offsetX,
+      offsetY: pallete.properties.green.offsetY,
+      n: pallete.colorBlockAmount
+    });
+      
+    let blue =  colorCurve({
+      i: i,
+      amp: pallete.properties.blue.amp,
+      freq: pallete.properties.blue.freq,
+      offsetX: pallete.properties.blue.offsetX,
+      offsetY: pallete.properties.blue.offsetY,
+      n: pallete.colorBlockAmount
+    });
+
+          
+        
+
+
+    //Контейнер с цветом
+    const colorBlock_Edit = createHTML_Element({
+        tag: 'div',
+        className: 'colorBlock_Edit',
+        parent: colorBlocksContainer_Edit,
+        option: {
+          dataset: {
+            colorInfo: `${red}, ${green}, ${blue}`
+          },
+          style: {backgroundColor: `rgba(${red}, ${green}, ${blue}, 1)`}
+        },
+      });
+
+        
+
+      //Копирование в буфер обмена цвета при нажатии на текст
+      colorBlock_Edit.addEventListener('click', function (el) {
+        navigator.clipboard.writeText(el.currentTarget.informationOfColor);
+        console.log(el.currentTarget.dataset.colorInfo)
+      })
+
+
+    //Подпись цвета
+    const colorAttributeHTML = createHTML_Element({
+        tag: 'p',
+        parent: colorBlock_Edit,
+        textContent: 
+        `RGB
+        R ${red}
+        G ${green}
+        B ${blue}
+        A 1`,
+        option: {
+          style: {color: invertColorText(red, green, blue)}
+        },
+      });
+
+  };
+
+
+
+
+
+  //Получаем все, что находится в '.editColorTools'
+  const getRangeValue = document.querySelector('.editColorTools');
+
+
+  getRangeValue.addEventListener('input', function (el) { 
+
+    const color = el.target.dataset.color;
+    const prop = el.target.dataset.prop;
+    const value = el.target.value;
+
+    pallete.properties[color][prop] = Number(value);
+
+
+    const colorBox = document.querySelectorAll('.colorBlock_Edit');
+    colorBox.forEach((v, i) => {
+      updateColor (v, i, pallete, v.firstChild);
+
+    })
+
+    
+
+  });
+
 };
-/*(x - 1) для того чтобы счетчик начинался с 0 и столбцов было столько же сколько и в объекте "n4"  учитывается в строчке где "Цвета генерируются по свойству объекта"*/
+
+
+function updateColor (obj, i, pallete, colorText) {
+
+  let red = colorCurve({
+    i: i,
+    amp: pallete.properties.red.amp,
+    freq: pallete.properties.red.freq,
+    offsetX: pallete.properties.red.offsetX,
+    offsetY: pallete.properties.red.offsetY,
+    n: pallete.colorBlockAmount
+  });
+      
+  let green = colorCurve({
+    i: i,
+    amp: pallete.properties.green.amp,
+    freq: pallete.properties.green.freq,
+    offsetX: pallete.properties.green.offsetX,
+    offsetY: pallete.properties.green.offsetY,
+    n: pallete.colorBlockAmount
+  });
+      
+  let blue =  colorCurve({
+    i: i,
+    amp: pallete.properties.blue.amp,
+    freq: pallete.properties.blue.freq,
+    offsetX: pallete.properties.blue.offsetX,
+    offsetY: pallete.properties.blue.offsetY,
+    n: pallete.colorBlockAmount
+  });
+
+   obj.style.backgroundColor = `rgba(${red}, ${green}, ${blue}, 1)`;
+   obj.dataset.colorInfo = `${red}, ${green}, ${blue}`;
+
+   colorText.style.color = invertColorText(red, green, blue);
+   colorText.innerText = `RGB
+        R ${red}
+        G ${green}
+        B ${blue}
+        A 1`;
+
+
+}
+
+  
 
 
 
 
-let amountNum = 60;             //Количество паллеток
-let colorItemContainer;         //Контейнер каждой отдельной паллетки   
-let colorHeader;                //Заголовок
-let colorPalleteContainer;      //Цвета
-let colorItemPalleteContainer  //Каждый цвет
-let colorComponentRed;          //Составляющий цвет красный
-let colorComponentGreen;        //Составляющий цвет зеленый
-let colorComponentBlue;         //Составляющий цвет синий
-let colorBlockStyle;            //Текстовая динамическая запись цвета
 
 
 
-colorsArray = [
+
+//  ---------------Данные---------------
+/**
+ * Массив палитр. Каждая палитра - это объект с параметрами волн
+ */
+
+const colorsArray = [
   {
     "name": "Синий пурпурный оранжевый",
     "properties": {
       "red": {
-        "shiftY": 0.8,
-        "waveAmount_k": 1.1,
-        "shiftX": 4.3,
-        "amplitY": 0.5
+        "freq": 1.1,
+        "offsetY": 0.8,
+        "offsetX": 4.3,
+        "amp": 0.5
       },
       "green": {
-        "shiftY": 0.3,
-        "waveAmount_k": 0.6,
-        "shiftX": 6.3,
-        "amplitY": 0.5
+        "offsetY": 0.3,
+        "freq": 0.6,
+        "offsetX": 6.3,
+        "amp": 0.5
       },
       "blue": {
-        "shiftY": 0.8,
-        "waveAmount_k": 0.5,
-        "shiftX": 21,
-        "amplitY": 0.4
+        "offsetY": 0.8,
+        "freq": 0.5,
+        "offsetX": 21,
+        "amp": 0.4
       }
     },
     "alpha": 1,
-    "colorBlockAmount": 5
+    "colorBlockAmount": 10
   },
 
 
@@ -158,30 +521,27 @@ colorsArray = [
     "name": "Синий голубой",
     "properties": {
       "red": {
-        "shiftY": -1,
-        "waveAmount_k": 0,
-        "shiftX": 0,
-        "amplitY": 0
+        "amp": 0,
+        "freq": 0,
+        "offsetX": 0,
+        "offsetY": -1,
       },
       "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
+        "amp": 0.5,
+        "freq": 1,
+        "offsetX": 5,
+        "offsetY": 0.5,
       },
       "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 0.7,
-        "shiftX": 2.7,
-        "amplitY": 0.5
+        "amp": 0.7,
+        "freq": 0.5,
+        "offsetX": 0,
+        "offsetY": 0.3,
       }
     },
     "alpha": 1,
-    "colorBlockAmount": 9
+    "colorBlockAmount": 10
   },
-
-
-
 
 
 
@@ -189,376 +549,177 @@ colorsArray = [
     "name": "Синий белый красный",
     "properties": {
       "red": {
-        "shiftY": 1,
-        "waveAmount_k": 0.9,
-        "shiftX": 5,
-        "amplitY": 1
+        "amp": 1,
+        "freq": 1,
+        "offsetX": 5,
+        "offsetY": 1,
       },
       "green": {
-        "shiftY": 0.6,
-        "waveAmount_k": 2,
-        "shiftX": 2.5,
-        "amplitY": 0.4
+        "amp": 0.8,
+        "freq": 1,
+        "offsetX": 0,
+        "offsetY": 0.2,
       },
       "blue": {
-        "shiftY": 1,
-        "waveAmount_k": 0.9,
-        "shiftX": 16,
-        "amplitY": 1
+        "amp": 1,
+        "freq": 1,
+        "offsetX": - 5,
+        "offsetY": 1,
       }
     },
     "alpha": 1,
-    "colorBlockAmount": 10
+    "colorBlockAmount": 20
   },
   {
     "name": "Голубой пурпурный",
     "properties": {
       "red": {
-        "shiftY": 0.6,
-        "waveAmount_k": 1,
-        "shiftX": 5.6,
-        "amplitY": 0.4
+        "offsetY": 0.6,
+        "freq": 1,
+        "offsetX": 5.6,
+        "amp": 0.4
       },
       "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 15,
-        "amplitY": 0.5
+        "offsetY": 0.5,
+        "freq": 1,
+        "offsetX": 15,
+        "amp": 0.5
       },
       "blue": {
-        "shiftY": 0.6,
-        "waveAmount_k": 1.2,
-        "shiftX": 12.3,
-        "amplitY": 0.4
+        "offsetY": 0.6,
+        "freq": 1.2,
+        "offsetX": 12.3,
+        "amp": 0.4
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 15
+  },
+
+  {
+    "name": "Оранжевый голубой",
+    "properties": {
+      "red": {
+        "amp": -0.5,
+        "freq": 5 / 3,
+        "offsetX": 3,
+        "offsetY": 0.5,
+      },
+      "green": {
+        "amp": -0.5,
+        "freq": 25 / 18,
+        "offsetX": 0,
+        "offsetY": 0.5,
+      },
+      "blue": {
+        "amp": -0.5,
+        "freq": 1,
+        "offsetX": - 5,
+        "offsetY": 0.5,
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 15
+  },
+  {
+    "name": "Случайный",
+    "properties": {
+      "red": {
+        "amp": 0.5,
+        "freq": 1,
+        "offsetX": 0,
+        "offsetY": 0.5,
+      },
+      "green": {
+        "amp": 0.5,
+        "freq": 1,
+        "offsetX": 5,
+        "offsetY": 0.5,
+      },
+      "blue": {
+        "amp": 0.5,
+        "freq": 2,
+        "offsetX": 5,
+        "offsetY": 0.5,
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 15
+  },
+  {
+    "name": "Оранжевый голубой",
+    "properties": {
+      "red": {
+        "offsetY": 0.5,
+        "freq": Math.PI / 2,
+        "offsetX": Math.PI * 3,
+        "amp": 0.5
+      },
+      "green": {
+        "offsetY": 0.5,
+        "freq": Math.PI / 2,
+        "offsetX": 7,
+        "amp": 0.5
+      },
+      "blue": {
+        "offsetY": 0.5,
+        "freq": 1,
+        "offsetX": 5,
+        "amp": 0.5
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 20
+  },
+  {
+    "name": "Оранжевый голубой",
+    "properties": {
+      "red": {
+        "offsetY": 0.5,
+        "freq": Math.PI / 2,
+        "offsetX": Math.PI * 3,
+        "amp": 0.5
+      },
+      "green": {
+        "offsetY": 0.5,
+        "freq": Math.PI / 2,
+        "offsetX": 7,
+        "amp": 0.5
+      },
+      "blue": {
+        "offsetY": 0.5,
+        "freq": 1,
+        "offsetX": 5,
+        "amp": 0.5
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 7
+  },
+    {
+    "name": "Синий голубой",
+    "properties": {
+      "red": {
+        "amp": 0,
+        "freq": 0,
+        "offsetX": 0,
+        "offsetY": -1,
+      },
+      "green": {
+        "amp": 0.5,
+        "freq": 1,
+        "offsetX": 5,
+        "offsetY": 0.5,
+      },
+      "blue": {
+        "amp": 0.7,
+        "freq": 0.5,
+        "offsetX": 0,
+        "offsetY": 0.3,
       }
     },
     "alpha": 1,
     "colorBlockAmount": 10
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI * Math.random(),
-        "shiftX": Math.PI * Math.random(),
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI * Math.random(),
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
-  },
-  {
-    "name": "Оранжевый голубой",
-    "properties": {
-      "red": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": Math.PI * 3,
-        "amplitY": 0.5
-      },
-      "green": {
-        "shiftY": 0.5,
-        "waveAmount_k": Math.PI / 2,
-        "shiftX": 7,
-        "amplitY": 0.5
-      },
-      "blue": {
-        "shiftY": 0.5,
-        "waveAmount_k": 1,
-        "shiftX": 5,
-        "amplitY": 0.5
-      }
-    },
-    "alpha": 1,
-    "colorBlockAmount": 7
   },
 ];
 
@@ -566,198 +727,26 @@ colorsArray = [
 
 
 
+//Контейнер всех паллеток
+const colorArrayContainer = document.createElement('div');
+colorArrayContainer.className = 'colorArrayContainer';
+ROOT_CONTAINER.appendChild(colorArrayContainer);
 
-/*
-for (i = 0; i <= amountNum; i++) {      //Генерация набора палеток
-    colorsArray.push(color);
-};*/
 
 
 
 
-let inputColorRange;                //Переменная ползунка
-let inputRangeArray = [];           //Создаем массив для input
 
-for (let i = 1; i <= 3; i++) {      //Создаем массив для input в количестве 3-х объектоа //(3) [1, 2, 3]
-    inputRangeArray.push(i)
-};
 
-let pseudo = [];
+colorsArray.forEach((value, index) => {
 
-colorsArray.forEach((value, index, array) => {
-    colorItemContainer = document.createElement('div');                     //Контейнер каждой отдельной паллетки
-        colorItemContainer.className = `colorItemContainer${index}`;                //Класс
-        colorArrayContainer.appendChild(colorItemContainer);                    //Передаем контейнер каждой отдельной паллетки в HTML
-        
-
-
-        colorPalleteContainer = document.createElement('div');              //Контейнер с цветами
-        colorPalleteContainer.className = `colorPalleteContainer${index}`;          //Класс
-        colorItemContainer.appendChild(colorPalleteContainer);                  //Передаем в HTML
-
-
-        let r1;
-        let r2;
-
-        let g1;
-        let g2;
-
-        let b1;
-        let b2;
-
-        let red;
-        let green;
-        let blue;
-
-        let colorAttributeHTML;
-        let colorAttributeHTML_invert;
-
-        let n4 = value.colorBlockAmount;
-        
-        for (let i = 0; i <= n4; i++) {                          //Генерация цветов
-
-
-
-        /*---------Цвета генерируются по свойству объекта----------*/
-
-        r1 = value.properties.red.waveAmount_k; 
-        r2 = value.properties.red.shiftX;
-        r3 = value.properties.red.amplitY;
-
-        r5 = value.properties.red.shiftY;
-        
-
-        g1 = value.properties.green.waveAmount_k;
-        g2 = value.properties.green.shiftX;
-        g3 = value.properties.green.amplitY;
-
-        g5 = value.properties.green.shiftY;
-
-
-        b1 = value.properties.blue.waveAmount_k;
-        b2 = value.properties.blue.shiftX;
-        b3 = value.properties.blue.amplitY;
-
-        b5 = value.properties.blue.shiftY;
-
-
-        red = colorCurve(i, r1, r2, r3, n4, r5);
-        green = colorCurve(i, g1, g2, g3, n4, g5);
-        blue = colorCurve(i, b1, b2, b3, n4, b5);
-
-
-
-        /*---------Цвета генерируются по методу объекта----------*/
-/*
-        r1 = value.properties.red.waveAmount_k;
-        r2 = value.properties.red.shiftX;
-
-        g1 = value.properties.green.waveAmount_k;
-        g2 = value.properties.green.shiftX;
-
-        b1 = value.properties.blue.waveAmount_k;
-        b2 = value.properties.blue.shiftX;
-
-        red = value.fn.red(i, randomNumberPI_Divader(), randomNumberPI_Divader(), 1, valueColorAmountFixed);
-        green = value.fn.red(i, randomNumberPI_Divader(), randomNumberPI_Divader(), 1, valueColorAmountFixed);
-        blue = value.fn.red(i, randomNumberPI_Divader(), randomNumberPI_Divader(), 1, valueColorAmountFixed);
-*/
-
-
-
-
-
-
-        if ((red + blue + green)/3 <= 255 / 2) {
-            colorAttributeHTML_invert = 'white' //white
-            } else {
-            colorAttributeHTML_invert = 'black' 
-            };
-
-
-
-            colorItemPalleteContainer = document.createElement('div');          //Контейнер с цветом
-            colorItemPalleteContainer.className = `colorItemPalleteContainer`;      //Класс
-            colorPalleteContainer.appendChild(colorItemPalleteContainer);           //Передаем в HTML
-                colorBlockStyle = `rgba(${red}, ${green}, ${blue}, 1)`;
-                colorItemPalleteContainer.style.backgroundColor = colorBlockStyle;
-
-                colorAttributeHTML = document.createElement('p');                           //Информация о цвете
-                    colorAttributeHTML.innerText = 
-                    `RGB
-                    R ${red}
-                    G ${green}
-                    B ${blue}
-                    A 1`;
-                    colorAttributeHTML.style.color = colorAttributeHTML_invert;
-                    colorItemPalleteContainer.appendChild(colorAttributeHTML);
-
-        };
-
-
-console.log(green)
-
-
-/*
-function colorCurve (x, waveAmount_k, shiftX, amplitY) {      //Определяет график кривой цвета
-    let value = Math.round( (Math.sin( x * waveAmount_k + shiftX ) * amplitY + amplitY ) * 255 / 2);
-    return value
-};
-
-    red = Math.round(
-    (
-        Math.sin(
-            (i/ n * 10 * Math.PI / 6) + (Math.PI / 2)
-        ) + 1 ) * 255 / 2);
-
-    green = Math.round(
-    (
-        Math.sin(
-            (i / n * 10 * Math.PI / 6) + (Math.PI / 1.2)
-        ) + 1 ) * 255 / 2);
-
-    blue = Math.round(
-    (
-        Math.sin(
-            (i / n * 10 * Math.PI / 10) - (- 3 * Math.PI / 2)
-        ) + 1 ) * 255 / 2);
-
-
-
-
-
-*/
-        
-
-
-
-
-
-        colorHeader = document.createElement('p');                         //Заголовок для каждой паллетки
-        colorHeader.innerText = `${value.name}`                        //Содержимое
-        colorItemContainer.appendChild(colorHeader);                            //Передаем в HTML
-
-        /*
-        inputRangeArray.forEach((val, ind, arr) => {                        //Создаем ползунки input //Для каждого элемента массива inputRangeArray создаем по вложенному массиву val, ind, arr// (3) [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
-            arr.forEach((v, i, a) => {
-                inputColorRange = document.createElement('input');
-                    inputColorRange.type = 'range';
-                    inputColorRange.value = 50;
-                    inputColorRange.className = `range${val}.${v}`;         //Задаем class_ы в формате ['range1.1', 'range1.2', 'range1.3', 'range2.1', 'range2.2', 'range2.3', 'range3.1', 'range3.2', 'range3.3']
-                    colorItemContainer.appendChild(inputColorRange);
-
-                });
-            }
-        );
-
-*/
-
+  //Генерация всех паллеток
+  colorPalletesGenerator (value, index, colorArrayContainer);
 
 });
 
 
 
-console.log(colorsArray);
 
 
 
@@ -765,69 +754,6 @@ console.log(colorsArray);
 
 
 
-
-
-/*
-let colorBlock;
-let colorPalleteBlock;
-let colorText;
-let n = 11;
-
-
-let red;
-let green;
-let blue;
-
-let invertColor;
-
-for (let i = 1; i <= n; i++) {
-
-    red = Math.round(
-    (
-        Math.sin(
-            (i/ n * 10 * Math.PI / 6) + (Math.PI / 2)
-        ) + 1 ) * 255 / 2);
-
-    green = Math.round(
-    (
-        Math.sin(
-            (i / n * 10 * Math.PI / 6) + (Math.PI / 1.2)
-        ) + 1 ) * 255 / 2);
-
-    blue = Math.round(
-    (
-        Math.sin(
-            (i / n * 10 * Math.PI / 10) - (- 3 * Math.PI / 2)
-        ) + 1 ) * 255 / 2);
-    
-
-    colorBlock = `rgba(${red}, ${green}, ${blue}, 1)`;
-    colorPalleteBlock = document.createElement('div');
-    colorPalleteBlock.className = 'blockColor';
-    colorPalleteBlock.style.backgroundColor = colorBlock;
-
-    if ((red + blue + green)/3 <= 255 / 2) {
-        invertColor = 'white' //white
-    } else {
-       invertColor = 'black' 
-    };
-
-
-    colorText = document.createElement('p');
-    colorText.innerText = 
-        `RGBA
-        R ${red} 
-        G ${green} 
-        B ${blue} 
-        A 1`;
-    colorText.style.color = invertColor;
-    colorPallete.appendChild(colorPalleteBlock);
-    colorPalleteBlock.appendChild(colorText)
-   console.log(colorPalleteBlock)
-   console.log(
-`${i} R ${red} G ${green} B ${blue}`)
-};
-*/
 
 
 
