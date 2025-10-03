@@ -260,18 +260,26 @@ a {
     justify-content: center;
     flex-direction: column;
     gap: 20px;
+    position: absolute;
+    top: 0px;
+    background-color: white;
+}
+
+.colorWindow_Edit h1 {
+    align-self: flex-start;
+    margin-left: 50px;
 }
 
 
 
 /*Контейнер с цветовыми блоками*/
 .colorBlocksContainer_Edit {
-    width: 90%;
+    width: 95%;
     display: flex;
     min-height: 450px;
     overflow: hidden;
     border-radius: 10px;
-    margin: 0 5rem;
+
 }
 
 .colorBlock_Edit {
@@ -289,7 +297,7 @@ a {
 .colorBlock_Edit p {
     font-size: 0.7rem;
     font-weight: 600;
-   opacity: 0;
+    opacity: 0;
     transition: opacity ease-in-out 0.1s;
 }
 
@@ -298,21 +306,24 @@ a {
     opacity: 1;
 }
 
+
+
+
 .colorBlock_Edit:active p {
-    font-size: 0.65rem;
+    font-size: 1rem;
     font-weight: 500;
     transition: all ease-in-out 0.05s;
 }
 
 
-
-
-
+.colorBlock_Edit:focus p {
+    color: aqua;
+}
 
 
 
 [class*='inputRange'] {
-    min-width: 400px;
+    min-width: 600px;
 }
 
 
@@ -334,20 +345,22 @@ a {
 
 
 .closePallete {
-    min-width: 100px;
+    min-width: 40px;
+    aspect-ratio: 1/1;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px;
     background-color: rgb(200, 0, 0);
     border-radius: 8px;
     border: solid 1px;
     color: white;
+    position: absolute;
+    right: 20px;
+    top: 20px;
 }
 
 .closePallete:hover {
-    min-width: 100px;
-    height: 50px;
+
     background-color: rgb(100, 0, 0);
     border-radius: 8px;
     border:  solid 1px;
@@ -362,7 +375,9 @@ a {
 .editColorTools {
     display: flex;
     width: 100%;
-    justify-content: space-around
+    justify-content: space-around;
+
+
 }
 
 .colorSliderBlock {
