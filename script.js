@@ -18,7 +18,6 @@ const ROOT_CONTAINER = document.querySelector('.content');
 
 
 
-
 //  ---------------Функции---------------
 
 /**
@@ -223,12 +222,12 @@ function editPalletesWindow ({
   const closeBtn = createHTML_Element({
     tag: 'div',
     className: 'closePallete',
-    textContent: 'Закрыть',
+    textContent: '✖',
     parent: colorEditWindow,
   });
 
   closeBtn.addEventListener('click', function () {
-  ROOT_CONTAINER.lastChild.remove()
+    ROOT_CONTAINER.lastChild.remove()
   })
   
     //Заголовок для каждой паллетки
@@ -374,19 +373,14 @@ function editPalletesWindow ({
         },
       });
 
-        
-
-      //Копирование в буфер обмена цвета при нажатии на текст
-      colorBlock_Edit.addEventListener('click', function (el) {
-        navigator.clipboard.writeText(el.currentTarget.informationOfColor);
-        console.log(el.currentTarget.dataset.colorInfo)
-      })
-
 
     //Подпись цвета
     const colorAttributeHTML = createHTML_Element({
         tag: 'p',
         parent: colorBlock_Edit,
+        option: {dataset:
+          {clicked: 'copied'}
+        },
         textContent: 
         `RGB
         R ${red}
@@ -396,6 +390,14 @@ function editPalletesWindow ({
         option: {
           style: {color: invertColorText(red, green, blue)}
         },
+      });
+        
+
+      //Копирование в буфер обмена цвета при нажатии на текст
+      colorBlock_Edit.addEventListener('click', function (el) {
+        navigator.clipboard.writeText(el.currentTarget.informationOfColor);
+        //colorAttributeHTML.textContent = '✔';
+        console.log(el.currentTarget.dataset.colorInfo)
       });
 
   };
@@ -463,7 +465,8 @@ function updateColor (obj, i, pallete, colorText) {
    obj.dataset.colorInfo = `${red}, ${green}, ${blue}`;
 
    colorText.style.color = invertColorText(red, green, blue);
-   colorText.innerText = `RGB
+   colorText.innerText =
+        `RGB
         R ${red}
         G ${green}
         B ${blue}
@@ -494,7 +497,7 @@ const colorsArray = [
         "freq": 1.1,
         "offsetY": 0.8,
         "offsetX": 4.3,
-        "amp": 0.5
+        "amp": 0.5,
       },
       "green": {
         "offsetY": 0.3,
@@ -716,6 +719,31 @@ const colorsArray = [
         "freq": 0.5,
         "offsetX": 0,
         "offsetY": 0.3,
+      }
+    },
+    "alpha": 1,
+    "colorBlockAmount": 10
+  },
+      {
+    "name": "Красный синий",
+    "properties": {
+      "red": {
+        "amp": 0.5,
+        "freq": 10/13,
+        "offsetX": -6.5,
+        "offsetY": 0.5,
+      },
+      "green": {
+        "amp": 0.5,
+        "freq": 25/11,
+        "offsetX": 2.8,
+        "offsetY": 0.5,
+      },
+      "blue": {
+        "amp": 0.5,
+        "freq": 50/31,
+        "offsetX": 3.2,
+        "offsetY": 0.5,
       }
     },
     "alpha": 1,
